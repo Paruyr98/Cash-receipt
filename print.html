@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Դաշինք ՍՊԸ</title>
+</head>
+
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function saveDataAndPrint() {
+        $.ajax({
+            type: 'POST',
+            url: '/addReceipt',
+        });
+        window.print();
+    }
+</script>
+
+
+<style type="text/css" media="print">
+    .no-print {
+        display: none;
+    }
+</style>
+
+
+<div th:each="i : ${#numbers.sequence(1,3)}">
+    <p><span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+    <table>
+        <tr>
+            <th>Անվանում</th>
+            <th>Քանակ</th>
+            <th>Գին</th>
+            <th>Գումար</th>
+        </tr>
+        <tr th:each="item : ${soldItems}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.count}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.price * item.count}"></td>
+        </tr>
+    </table>
+    <h2>Վաճառող: <span th:text="${cashier}"></span></h2>
+    <h2>Ընդհամենը: <span th:text="${receiptPrice}"></span></h2>
+    <hr>
+
+
+</div>
+
+<button class="no-print" onclick="saveDataAndPrint()">Print</button>
+
+</body>
+</html>
